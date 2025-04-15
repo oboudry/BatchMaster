@@ -129,7 +129,7 @@ const BatchRecords = () => {
                 <SelectValue placeholder="All Work Orders" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Work Orders</SelectItem>
+                <SelectItem value="all">All Work Orders</SelectItem>
                 {workOrders?.map(wo => (
                   <SelectItem key={wo.id} value={wo.workOrderNumber}>
                     #{wo.workOrderNumber}
@@ -146,7 +146,7 @@ const BatchRecords = () => {
                 <SelectValue placeholder="All Statuses" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Statuses</SelectItem>
+                <SelectItem value="all">All Statuses</SelectItem>
                 <SelectItem value="complete">Complete</SelectItem>
                 <SelectItem value="incomplete">Incomplete</SelectItem>
                 <SelectItem value="in-progress">In Progress</SelectItem>
@@ -161,7 +161,7 @@ const BatchRecords = () => {
                 <SelectValue placeholder="All Operators" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Operators</SelectItem>
+                <SelectItem value="all">All Operators</SelectItem>
                 {operators.map(op => (
                   <SelectItem key={op.id} value={op.id.toString()}>
                     {op.fullName}

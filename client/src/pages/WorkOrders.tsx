@@ -55,7 +55,7 @@ const WorkOrders = () => {
                 <SelectValue placeholder="All Statuses" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Statuses</SelectItem>
+                <SelectItem value="all">All Statuses</SelectItem>
                 <SelectItem value="planned">Planned</SelectItem>
                 <SelectItem value="in_progress">In Progress</SelectItem>
                 <SelectItem value="completed">Completed</SelectItem>
@@ -73,7 +73,7 @@ const WorkOrders = () => {
                 <SelectValue placeholder="All Dates" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Dates</SelectItem>
+                <SelectItem value="all">All Dates</SelectItem>
                 <SelectItem value="today">Today</SelectItem>
                 <SelectItem value="this-week">This Week</SelectItem>
                 <SelectItem value="this-month">This Month</SelectItem>
@@ -90,7 +90,7 @@ const WorkOrders = () => {
                 <SelectValue placeholder="All Products" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Products</SelectItem>
+                <SelectItem value="all">All Products</SelectItem>
                 <SelectItem value="moisturizer">Moisturizer</SelectItem>
                 <SelectItem value="cleanser">Cleanser</SelectItem>
                 <SelectItem value="serum">Serum</SelectItem>
