@@ -101,7 +101,7 @@ const Reports = () => {
               <SelectValue placeholder="All Products" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Products</SelectItem>
+              <SelectItem value="all">All Products</SelectItem>
               {products?.map((product: any) => (
                 <SelectItem key={product.id} value={product.id.toString()}>
                   {product.name}
