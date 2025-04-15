@@ -28,7 +28,7 @@ const BatchRecords = () => {
   
   // Fetch batch records with relations
   const { data: batchRecords, isLoading, error } = useQuery<BatchRecordWithRelations[]>({
-    queryKey: ['/api/batch-records', { includeRelations: true }],
+    queryKey: ['/api/batch-records?includeRelations=true'],
   });
   
   // Fetch work orders for dropdown

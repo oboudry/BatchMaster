@@ -19,7 +19,7 @@ const WorkOrderTable: React.FC<WorkOrderTableProps> = ({ onViewClick, onEditClic
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const { data: workOrders, isLoading, error } = useQuery<WorkOrderWithRelations[]>({
-    queryKey: ['/api/work-orders', { includeRelations: true }],
+    queryKey: ['/api/work-orders?includeRelations=true'],
   });
 
   const handleViewClick = (workOrder: WorkOrderWithRelations) => {
