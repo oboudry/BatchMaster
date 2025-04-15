@@ -80,7 +80,7 @@ export const BarChart: React.FC<BarChartProps> = ({ data, options, horizontal = 
       const ctx = chartRef.current.getContext('2d');
       if (ctx) {
         chartInstance.current = new Chart(ctx, {
-          type: horizontal ? 'horizontalBar' : 'bar',
+          type: 'bar',
           data,
           options: {
             indexAxis: horizontal ? 'y' : 'x',
