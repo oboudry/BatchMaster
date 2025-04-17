@@ -1,6 +1,7 @@
-import { pgTable, text, serial, integer, boolean, timestamp, pgEnum } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, timestamp, pgEnum, primaryKey } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
+import { relations } from "drizzle-orm";
 
 // Users and Roles
 export const roleEnum = pgEnum('role', ['operator', 'quality_controller', 'admin']);
@@ -125,6 +126,87 @@ export const activityLogs = pgTable("activity_logs", {
 
 // Priority Levels
 export const priorityLevelEnum = pgEnum('priority_level', ['low', 'medium', 'high']);
+
+// Define all relations
+export const usersRelations = relations(users, ({ many }) => ({
+  assignedWorkOrders: many(workOrders, { relationName: "operator_work_orders" }),
+  operatedBatchRecords: many(batchRecords, { relationName: "operator_batch_records" }),
+  reviewedQualityReviews: many(qualityReviews, { relationName: "reviewer_quality_reviews" }),
+  activityLogs: many(activityLogs),
+}));
+
+export const productsRelations = relations(products, ({ many }) => ({
+  workOrders: many(workOrders)
+}));
+
+export const workOrdersRelations = relations(workOrders, ({ one, many }) => ({
+  product: one(products, {
+    fields: [workOrders.productId],
+    references: [products.id],
+  }),
+  operator: one(users, {
+    fields: [workOrders.assignedOperatorId],
+    references: [users.id],
+    relationName: "operator_work_orders"
+  }),
+  batchRecord: one(batchRecords)
+}));
+
+export const batchRecordsRelations = relations(batchRecords, ({ one, many }) => ({
+  workOrder: one(workOrders, {
+    fields: [batchRecords.workOrderId],
+    references: [workOrders.id],
+  }),
+  operator: one(users, {
+    fields: [batchRecords.operatorId],
+    references: [users.id],
+    relationName: "operator_batch_records"
+  }),
+  manufacturingSteps: many(manufacturingSteps),
+  qualityControlTests: many(qualityControlTests),
+  qualityReview: one(qualityReviews)
+}));
+
+export const manufacturingStepsRelations = relations(manufacturingSteps, ({ one }) => ({
+  batchRecord: one(batchRecords, {
+    fields: [manufacturingSteps.batchRecordId],
+    references: [batchRecords.id],
+  }),
+  completedByUser: one(users, {
+    fields: [manufacturingSteps.completedBy],
+    references: [users.id],
+  })
+}));
+
+export const qualityControlTestsRelations = relations(qualityControlTests, ({ one }) => ({
+  batchRecord: one(batchRecords, {
+    fields: [qualityControlTests.batchRecordId],
+    references: [batchRecords.id],
+  }),
+  completedByUser: one(users, {
+    fields: [qualityControlTests.completedBy],
+    references: [users.id],
+  })
+}));
+
+export const qualityReviewsRelations = relations(qualityReviews, ({ one }) => ({
+  batchRecord: one(batchRecords, {
+    fields: [qualityReviews.batchRecordId],
+    references: [batchRecords.id],
+  }),
+  reviewer: one(users, {
+    fields: [qualityReviews.reviewerId],
+    references: [users.id],
+    relationName: "reviewer_quality_reviews"
+  })
+}));
+
+export const activityLogsRelations = relations(activityLogs, ({ one }) => ({
+  user: one(users, {
+    fields: [activityLogs.userId],
+    references: [users.id],
+  })
+}));
 
 // Insert schemas
 export const insertUserSchema = createInsertSchema(users).omit({ id: true, createdAt: true });
