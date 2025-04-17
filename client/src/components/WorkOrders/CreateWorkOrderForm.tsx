@@ -79,21 +79,25 @@ const CreateWorkOrderForm: React.FC<CreateWorkOrderFormProps> = ({
       // Convert string date to ISO date format
       const formattedData = {
         ...data,
-        startDate: new Date(data.startDate)
+        startDate: new Date(data.startDate),
+        workOrderNumber: `WO-${new Date().getFullYear()}-${Math.floor(Math.random() * 10000).toString().padStart(4, '0')}`
       };
       
-      return apiRequest("POST", "/api/work-orders", formattedData);
+      const response = await apiRequest("POST", "/api/work-orders", formattedData);
+      // Parse the response to return the data
+      return response.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/work-orders'] });
       toast({
-        title: "Work Order Created",
+        title: "Success",
         description: "Work order has been successfully created.",
       });
       form.reset();
       if (onSuccess) onSuccess();
     },
     onError: (error) => {
+      console.error("Create work order error:", error);
       toast({
         title: "Error",
         description: `Failed to create work order: ${error.message}`,
@@ -113,17 +117,20 @@ const CreateWorkOrderForm: React.FC<CreateWorkOrderFormProps> = ({
         notes: data.notes
       };
       
-      return apiRequest("PATCH", `/api/work-orders/${existingWorkOrder.id}`, updatableData);
+      const response = await apiRequest("PATCH", `/api/work-orders/${existingWorkOrder.id}`, updatableData);
+      // Parse the response to return the data
+      return response.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/work-orders'] });
       toast({
-        title: "Work Order Updated",
+        title: "Success",
         description: "Work order has been successfully updated.",
       });
       if (onSuccess) onSuccess();
     },
     onError: (error) => {
+      console.error("Update work order error:", error);
       toast({
         title: "Error",
         description: `Failed to update work order: ${error.message}`,
@@ -249,19 +256,27 @@ const CreateWorkOrderForm: React.FC<CreateWorkOrderFormProps> = ({
         <FormField
           control={form.control}
           name="notes"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Notes</FormLabel>
-              <FormControl>
-                <Textarea
-                  disabled={isSubmitting}
-                  placeholder="Add any additional notes here..."
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          render={({ field }) => {
+            // Ensure notes is always a string
+            const safeValue = field.value || '';
+            return (
+              <FormItem>
+                <FormLabel>Notes</FormLabel>
+                <FormControl>
+                  <Textarea
+                    disabled={isSubmitting}
+                    placeholder="Add any additional notes here..."
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    name={field.name}
+                    ref={field.ref}
+                    value={safeValue}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            );
+          }}
         />
 
         <div className="flex justify-end space-x-3 pt-4">

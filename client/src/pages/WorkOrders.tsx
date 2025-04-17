@@ -38,8 +38,8 @@ const WorkOrders = () => {
               <span>New Work Order</span>
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-xl">
-            <h2 className="text-lg font-medium mb-4">Create New Work Order</h2>
+          <DialogContent className="sm:max-w-xl max-h-[90vh] overflow-y-auto">
+            <div className="text-lg font-medium mb-4">Create New Work Order</div>
             <CreateWorkOrderForm onSuccess={() => setNewWorkOrderDialogOpen(false)} />
           </DialogContent>
         </Dialog>
