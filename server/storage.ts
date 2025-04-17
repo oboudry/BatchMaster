@@ -333,11 +333,8 @@ export class DatabaseStorage implements IStorage {
 
   async getPendingQualityReviews(): Promise<BatchRecordWithRelations[]> {
     // Get batch records that are complete but don't have quality reviews
-    const batchRecordsWithoutReviews = await db.query.batchRecords.findMany({
-      where: and(
-        eq(batchRecords.isComplete, true),
-        isNull(batchRecords.reviewedAt)
-      ),
+    const completeBatchRecords = await db.query.batchRecords.findMany({
+      where: eq(batchRecords.isComplete, true),
       with: {
         workOrder: {
           with: {
@@ -351,6 +348,8 @@ export class DatabaseStorage implements IStorage {
       }
     });
 
+    // Filter out records that already have a quality review
+    const batchRecordsWithoutReviews = completeBatchRecords.filter(record => !record.qualityReview);
     return batchRecordsWithoutReviews as BatchRecordWithRelations[];
   }
 
