@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { PlusIcon, SearchIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
@@ -112,9 +112,11 @@ const BatchRecords = () => {
               <span>New Batch Record</span>
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-xl">
-            <h2 className="text-lg font-medium mb-4">Create New Batch Record</h2>
-            <BatchRecordForm onSuccess={() => setNewBatchRecordDialogOpen(false)} />
+          <DialogContent className="sm:max-w-xl max-h-[95vh] overflow-y-auto">
+            <DialogTitle>Create New Batch Record</DialogTitle>
+            <div className="mt-4">
+              <BatchRecordForm onSuccess={() => setNewBatchRecordDialogOpen(false)} />
+            </div>
           </DialogContent>
         </Dialog>
       </div>
@@ -295,10 +297,10 @@ const BatchRecords = () => {
       
       {/* View Batch Record Dialog */}
       <Dialog open={viewBatchRecordDialogOpen} onOpenChange={setViewBatchRecordDialogOpen}>
-        <DialogContent className="sm:max-w-xl">
+        <DialogContent className="sm:max-w-xl max-h-[95vh] overflow-y-auto">
           {selectedBatchRecord && (
             <div className="space-y-4">
-              <h2 className="text-lg font-medium">Batch Record Details</h2>
+              <DialogTitle>Batch Record Details</DialogTitle>
               <div className="rounded-md bg-gray-50 p-4 space-y-3">
                 <div className="flex justify-between">
                   <span className="text-gray-500">Work Order:</span>
@@ -479,14 +481,16 @@ const BatchRecords = () => {
 
       {/* Edit Batch Record Dialog */}
       <Dialog open={editBatchRecordDialogOpen} onOpenChange={setEditBatchRecordDialogOpen}>
-        <DialogContent className="sm:max-w-xl">
-          <h2 className="text-lg font-medium mb-4">Update Batch Record</h2>
-          {selectedBatchRecord && (
-            <BatchRecordForm 
-              existingBatchRecord={selectedBatchRecord} 
-              onSuccess={() => setEditBatchRecordDialogOpen(false)} 
-            />
-          )}
+        <DialogContent className="sm:max-w-xl max-h-[95vh] overflow-y-auto">
+          <DialogTitle>Update Batch Record</DialogTitle>
+          <div className="mt-4">
+            {selectedBatchRecord && (
+              <BatchRecordForm 
+                existingBatchRecord={selectedBatchRecord} 
+                onSuccess={() => setEditBatchRecordDialogOpen(false)} 
+              />
+            )}
+          </div>
         </DialogContent>
       </Dialog>
     </div>
