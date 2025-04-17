@@ -79,13 +79,12 @@ const CreateWorkOrderForm: React.FC<CreateWorkOrderFormProps> = ({
       // Convert string date to ISO date format
       const formattedData = {
         ...data,
-        startDate: new Date(data.startDate),
-        workOrderNumber: `WO-${new Date().getFullYear()}-${Math.floor(Math.random() * 10000).toString().padStart(4, '0')}`
+        startDate: new Date(data.startDate)
+        // The server will generate the workOrderNumber
       };
       
-      const response = await apiRequest("POST", "/api/work-orders", formattedData);
-      // Parse the response to return the data
-      return response.json();
+      // Use returnJson = true to automatically parse the response
+      return apiRequest("POST", "/api/work-orders", formattedData, true);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/work-orders'] });
@@ -117,9 +116,8 @@ const CreateWorkOrderForm: React.FC<CreateWorkOrderFormProps> = ({
         notes: data.notes
       };
       
-      const response = await apiRequest("PATCH", `/api/work-orders/${existingWorkOrder.id}`, updatableData);
-      // Parse the response to return the data
-      return response.json();
+      // Use returnJson = true to automatically parse the response
+      return apiRequest("PATCH", `/api/work-orders/${existingWorkOrder.id}`, updatableData, true);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/work-orders'] });

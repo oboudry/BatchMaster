@@ -201,10 +201,10 @@ const WorkOrderTable: React.FC<WorkOrderTableProps> = ({ onViewClick, onEditClic
 
       {/* Dialog for View/Edit Work Order */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="sm:max-w-xl">
+        <DialogContent className="sm:max-w-xl max-h-[90vh] overflow-y-auto">
           {dialogContent && dialogType === 'view' && (
             <div className="space-y-4">
-              <h2 className="text-lg font-medium">Work Order Details</h2>
+              <div className="text-lg font-medium">Work Order Details</div>
               <div className="rounded-md bg-gray-50 p-4 space-y-3">
                 <div className="flex justify-between">
                   <span className="text-gray-500">ID:</span>
@@ -250,7 +250,7 @@ const WorkOrderTable: React.FC<WorkOrderTableProps> = ({ onViewClick, onEditClic
           )}
           {dialogContent && dialogType === 'edit' && (
             <div>
-              <h2 className="text-lg font-medium">Edit Work Order</h2>
+              <div className="text-lg font-medium">Edit Work Order</div>
               <CreateWorkOrderForm 
                 existingWorkOrder={dialogContent} 
                 onSuccess={() => setDialogOpen(false)} 

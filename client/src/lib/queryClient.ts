@@ -7,11 +7,12 @@ async function throwIfResNotOk(res: Response) {
   }
 }
 
-export async function apiRequest(
+export async function apiRequest<T = any>(
   method: string,
   url: string,
   data?: unknown | undefined,
-): Promise<Response> {
+  returnJson: boolean = false
+): Promise<T | Response> {
   const res = await fetch(url, {
     method,
     headers: data ? { "Content-Type": "application/json" } : {},
@@ -20,6 +21,12 @@ export async function apiRequest(
   });
 
   await throwIfResNotOk(res);
+  
+  // If returnJson is true, parse and return the JSON response
+  if (returnJson) {
+    return res.json() as Promise<T>;
+  }
+  
   return res;
 }
 
